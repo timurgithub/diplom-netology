@@ -46,6 +46,7 @@ diplom-infra/
 ├── .gitignore
 ├── .terraform.lock.hcl
 └── README.md
+```
 
 ## Полный текст работы в Google Docs
 

@@ -26,18 +26,20 @@
 
 ## Структура проекта
 
+```bash
 diplom-infra/
-├── ansible/                      # Плейбуки Ansible
+├── ansible/                    # Плейбуки Ansible
 │   ├── elk_ansible/
 │   │   ├── elasticsearch/
 │   │   │   └── main.yml
 │   │   ├── filebeat/
 │   │   │   └── main.yml
-│   │   └── kibana/
-│   │       └── main.yml
+│   │   ├── kibana/
+│   │   │   └── main.yml
+│   │   └── elk_install.yml
 │   ├── install_nginx.yml
 │   └── install_zabbix_agent.yml
-├── terraform/                   # Код Terraform
+├── terraform/                  # Код Terraform
 │   ├── main.tf
 │   ├── provider.tf
 │   └── variables.tf

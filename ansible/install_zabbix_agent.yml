@@ -1,0 +1,34 @@
+---
+- name: Установка и конфигурация Zabbix Agent
+  hosts: webservers
+  become: yes
+  tasks:
+    - name: Установка Zabbix 
+      ansible.builtin.apt:
+        deb: "https://repo.zabbix.com/zabbix/7.0/ubuntu/pool/main/z/zabbix-release/zabbix-release_7.0-1+ubuntu24.04_all.deb"
+        state: present
+
+    - name: Обновление APT кэша
+      ansible.builtin.apt:
+        update_cache: yes
+
+    - name: Установка Zabbix Agent
+      ansible.builtin.apt:
+        name: zabbix-agent
+        state: present
+
+    - name: Конфигурация Zabbix Agent
+      ansible.builtin.lineinfile:
+        path: /etc/zabbix/zabbix_agentd.conf
+        regexp: "{{ item.regexp }}"
+        line: "{{ item.line }}"
+      with_items:
+        - { regexp: '^Server=', line: 'Server=10.10.1.26' }
+        - { regexp: '^ServerActive=', line: 'ServerActive=10.10.1.26' }
+        - { regexp: '^Hostname=', line: 'Hostname={{ inventory_hostname }}' }
+
+    - name: Рестарт Zabbix Agent
+      ansible.builtin.systemd:
+        name: zabbix-agent
+        state: restarted
+        enabled: yes

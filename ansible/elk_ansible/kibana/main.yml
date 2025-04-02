@@ -1,0 +1,35 @@
+- name: Скачивание .deb пакета Kibana
+  get_url:
+    url: https://mirror.yandex.ru/mirrors/elastic/8/pool/main/k/kibana/kibana-8.17.3-amd64.deb
+    dest: /tmp/kibana-8.17.3-amd64.deb
+
+- name: Установка Kibana
+  apt:
+    deb: /tmp/kibana-8.17.3-amd64.deb
+
+- name: Включение и запуск службы Kibana
+  systemd:
+    name: kibana
+    enabled: yes
+    state: started
+
+- name: Настройка kibana.yml
+  copy:
+    dest: /etc/kibana/kibana.yml
+    content: |
+server.host: "0.0.0.0"
+server.name: "kibana"
+
+elasticsearch.hosts:
+  - https://elasticsearch.ru-central1.internal:9200
+elasticsearch.username: elastic
+elasticsearch.password: cvXCKEl1cfuByxW8NwAF
+elasticsearch.ssl.verificationMode: none
+
+pid.file: /run/kibana/kibana.pid
+
+- name: Включение и запуск службы Kibana
+  systemd:
+    name: kibana
+    enabled: yes
+    state: started

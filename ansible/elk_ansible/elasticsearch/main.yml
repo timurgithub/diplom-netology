@@ -1,0 +1,15 @@
+---
+- name: Скачивание .deb пакета Elasticsearch
+  get_url:
+    url: https://mirror.yandex.ru/mirrors/elastic/8/pool/main/e/elasticsearch/elasticsearch-8.17.3-amd64.deb
+    dest: /tmp/elasticsearch-8.17.3-amd64.deb
+
+- name: Установка Elasticsearch
+  apt:
+    deb: /tmp/elasticsearch-8.17.3-amd64.deb
+
+- name: Включение и запуск службы Elasticsearch
+  systemd:
+    name: elasticsearch
+    enabled: yes
+    state: started

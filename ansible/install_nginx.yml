@@ -1,0 +1,59 @@
+- name: Установка и настройка Nginx
+  hosts: webservers
+  become: yes  # Даем root-права
+
+  tasks:
+    - name: Обновление списка пакетов
+      apt:
+        update_cache: yes
+
+    - name: Установка Nginx
+      apt:
+        name: nginx
+        state: present
+
+    - name: Создание директории для сайта
+      file:
+        path: /var/www/html
+        state: directory
+        mode: '0755'
+
+    - name: Создание index.html на web1
+      copy:
+      content: |
+      <!DOCTYPE html>
+      <html lang="ru">
+      <head>
+          <meta charset="UTF-8">
+          <title>Web1</title>
+      </head>
+      <body>
+          <h1>Вы на сервере web1</h1>
+      </body>
+      </html>
+        dest: /var/www/html/index.html
+        mode: '0644'
+      when: "'web1' in inventory_hostname"
+
+    - name: Создание index.html на web2
+      copy:
+      content: |
+      <!DOCTYPE html>
+      <html lang="ru">
+      <head>
+          <meta charset="UTF-8">
+          <title>Web2</title>
+      </head>
+      <body>
+          <h1>Вы на сервере web2</h1>
+      </body>
+      </html>
+        dest: /var/www/html/index.html
+        mode: '0644'
+      when: "'web2' in inventory_hostname"
+
+    - name: Включение и запуск Nginx
+      service:
+        name: nginx
+        state: started
+        enabled: yes

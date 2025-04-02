@@ -1,0 +1,11 @@
+- name: Установка Elasticsearch
+  hosts: elasticsearch
+  become: yes
+  tasks:
+    - include_tasks: ./elasticsearch/main.yml
+
+- name: Установка Kibana
+  hosts: kibana
+  become: yes
+  tasks:
+    - include_tasks: ./kibana/main.yml

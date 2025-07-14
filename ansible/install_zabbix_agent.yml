@@ -23,8 +23,8 @@
         regexp: "{{ item.regexp }}"
         line: "{{ item.line }}"
       with_items:
-        - { regexp: '^Server=', line: 'Server=10.10.1.26' }
-        - { regexp: '^ServerActive=', line: 'ServerActive=10.10.1.26' }
+        - { regexp: '^Server=', line: 'Server={{ hostvars['zabbix-server']['ansible_default_ipv4']['address'] }}' }
+        - { regexp: '^ServerActive=', line: 'ServerActive={{ hostvars['zabbix-server']['ansible_default_ipv4']['address'] }}' }
         - { regexp: '^Hostname=', line: 'Hostname={{ inventory_hostname }}' }
 
     - name: Рестарт Zabbix Agent
